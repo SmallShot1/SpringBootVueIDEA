@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<link rel="stylesheet" href="../../assets/css/relys/login.css">
+	</head>
+	<body>
+		<div class="container" id="app">
+			<div class="loginBox">
+				<h3>注册</h3>
+				<form id="loginForm">
+					<div class="input-wrapper">
+						<label>账号:</label>
+						<input v-model="username" type="text" name="" placeholder="请输入账号">
+					</div>
+					<div class="input-wrapper">
+						<label>密码:</label>
+						<input v-model="mima" type="password" name="" placeholder="密码">
+					</div>
+					<div class="input-wrapper">
+						<label>企业编号:</label>
+						<input v-model="qiyebianhao" type="text" name="" placeholder="请输入企业编号">
+					</div>
+					<div class="input-wrapper">
+						<label>企业名称:</label>
+						<input v-model="qiyemingcheng" type="text" name="" placeholder="请输入企业名称">
+					</div>
+					<div class="input-wrapper">
+						<label>负责人:</label>
+						<input v-model="fuzeren" type="text" name="" placeholder="请输入负责人">
+					</div>
+					<div class="input-wrapper">
+						<label>联系电话:</label>
+						<input v-model="lianxidianhua" type="text" name="" placeholder="请输入联系电话">
+					</div>
+					<div class="input-wrapper">
+						<label>招聘岗位:</label>
+						<input v-model="zhaopingangwei" type="text" name="" placeholder="请输入招聘岗位">
+					</div>
+					<div class="input-wrapper">
+						<label>用户名:</label>
+						<input v-model="yonghuming" type="text" name="" placeholder="请输入用户名">
+					</div>
+					<div class="input-wrapper">
+						<label>姓名:</label>
+						<input v-model="xingming" type="text" name="" placeholder="请输入姓名">
+					</div>
+					<div class="input-wrapper">
+						<label>电话:</label>
+						<input v-model="dianhua" type="text" name="" placeholder="请输入电话">
+					</div>
+				</form>
+				<a href="../login/login.html">已有账号？去登录</a>
+				<button type="button" @click="userRegister">注册</button>
+			</div>
+		</div>
+		<script src="../../assets/js/relys/jquery.js"></script>
+		<script src="../../assets/js/relys/vue.js"></script>
+		<script src="../../assets/js/api/api.js"></script>
+		<script src="../../assets/js/api/defaultuser.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					username: '',
+					mima: '',
+					"qiyebianhao": "",
+					"qiyemingcheng": "",
+					"fuzeren": "",
+					"lianxidianhua": "",
+					"zhaopingangwei": "",
+					"yonghuming": "",
+					"xingming": "",
+					"dianhua": "",
+				},
+				methods: {
+					userRegister(){
+						var data = {
+							"": this.username,
+							"mima": this.mima,
+							"qiyebianhao": this.qiyebianhao,
+							"qiyemingcheng": this.qiyemingcheng,
+							"fuzeren": this.fuzeren,
+							"lianxidianhua": this.lianxidianhua,
+							"zhaopingangwei": this.zhaopingangwei,
+							"yonghuming": this.yonghuming,
+							"xingming": this.xingming,
+							"dianhua": this.dianhua,
+						}
+						register('yingpinxinxi', data, function(res){
+							if(res.code==0){
+								alert('注册成功')
+								window.parent.location.href = '../login/login.html'
+							}
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

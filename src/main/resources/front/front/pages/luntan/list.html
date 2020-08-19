@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="../../assetsimages/x-icon/agricul.png">
+		<link rel="stylesheet" href="../../assets/css/relys/animate.css">
+		<link rel="stylesheet" href="../../assets/css/relys/bootstrap.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/all.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/icofont.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/lightcase.css">
+		<link rel="stylesheet" href="../../assets/css/relys/swiper.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/style.css">
+		<style>
+			.post-btn{
+				padding: 20px 30px;
+				background-color: #FFB11F;
+				color: #fff;
+				border: 0;
+				margin: 40px;
+			}
+			.post-btn:hover{
+				background-color: #000000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!-- Page Header Section Start Here -->
+			<section class="page-header bg_img padding-tb">
+			    <div class="overlay"></div>
+			    <div class="container">
+			        <div class="page-header-content-area">
+			            <h4 class="ph-title">论坛</h4>
+			            <ul class="agri-ul">
+			                <li><a>首页</a></li>
+			                <li><a class="active">论坛</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</section>
+			<button class="post-btn" @click="postshow=!postshow">{{!postshow?"发布帖子":"隐藏"}}</button>
+			<!-- Page Header Section Ending Here -->
+			<!-- Blog Section Start Here -->
+			<div class="blog-section blog-single padding-tb" v-if="!postshow">
+			    <div class="container">
+			        <div class="section-wrapper">
+			            <div class="row justify-content-center">
+			                <div class="col-lg-12 col-12">
+			                    <article>
+			                        <div class="post-item-2" v-for="item in list">
+			                    		<div class="post-inner">
+			                    			<div class="post-content">
+												<div class="com-thumb">
+												    <img alt="" src="../../assets/images/author.jpg"class="avatar avatar-90 photo" style="width: 90px;height: 90px">          
+												</div>
+			                    				<ul class="agri-ul post-date">
+			                    					<li><span>By <a href="#">******</a></span></li>
+			                    				</ul>
+			                    				<a href="#"><h3>{{item.title}}</h3></a>
+			                    				<p>{{item.content.substr(0, 40)}}......</p>
+			                    				<div class="d-flex flex-wrap justify-content-between more-com">
+			                    					<div class="text-btn">
+			                    						<a @click.prevent="onpageTap(`./detail.html?id=${item.id}`)"><span>查看详情<i class="fa fa-angle-double-right"></i></span></a>
+			                    					</div>
+			                    				</div>
+			                    			</div>
+			                    		</div>
+			                    	</div>
+			                       <div class="paginations">
+										<ul class="agri-ul d-flex flex-wrap justify-content-center" id="paginator">
+										</ul>
+			                       </div>
+			                    </article>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="newsletter-section" v-if="postshow">
+				<div class="container">
+					<div class="row justify-content-lg-between justify-content-center align-items-center">
+						<div class="col-lg-6 col-12">
+							<div class="newsletter-title">
+								<h4>发布帖子</h4>
+							</div>
+						</div>
+						<div class="col-lg-6 col-12">
+							<div class="newsletter-form">
+								<form @submit.prevent="addFroum" class="d-flex flex-wrap">
+									<input v-model="title" type="text" placeholder="帖子标题" class="input-email">
+									<input v-model="content" type="text" placeholder="帖子内容" class="input-email">
+									<input type="submit" value="提交" class="subscribe-btn">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../assets/js/relys/jquery.js"></script>
+		<script src="../../assets/js/relys/vue.js"></script>
+		<script src="../../assets/js/relys/vue.min.js"></script>
+		<script src="../../assets/js/api/api.js"></script>
+		<script src="../../assets/js/api/tplist.js"></script>
+		<script src="../../assets/js/relys/utils.js"></script>
+		<script src="../../assets/js/api/defaultuser.js"></script>
+		<script src="../../assets/js/relys/jq-paginator.min.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					page: 1,
+						limit: 12,
+						list: [],
+						title: "",
+						content: "",
+						postshow: false,
+						type: "",
+					list: []
+				},
+				async created(){
+					var type = getParam("type")
+					if(type){
+						this.type="my"
+					}
+					var data = await this.getList()
+					this.pageFun(data)
+				},
+				methods: {
+					onpageTap(url){
+						window.location.href = url
+					},
+					getsession(){
+						return new Promise((resolve) => {
+						var usertable = localStorage.getItem("sessionTable")
+							session(`${usertable}`, (res) => {
+								if(res&&res.code==0){
+									var user = res.data
+									resolve(user)
+								}
+							})
+						})
+					},
+					getList(){
+						return new Promise(async (resolve) => {
+							var url = `forum/flist?page=${this.page}&limit=${this.limit}&parentid=0&isdone=开放&sort=addtime&order=desc`
+							if(this.type == "my"){
+								url = `forum/page?parentid=0&sort=addtime&order=desc&page=${this.page}&limit=${this.limit}`
+							}
+							httpJson(url, "GET", "", (res) => {
+								if(res&&res.code==0){
+									this.list = res.data.list
+									resolve(res.data)
+								}
+							})
+						})
+					},
+					addFroum(){
+						var usertable = localStorage.getItem("sessionTable")
+						session(`${usertable}`, (res) => {
+							if(res&&res.code==0){
+								var user = res.data
+								var data = {
+									"title": this.title,
+									"content": this.content,
+									"parentid": 0,
+									"isdone": "开放",
+									"userid": user.id
+								}
+								httpJson(`forum/save`, "POST", data, (data) => {
+									if(data&&data.code==0){
+										alert("发布成功")
+										this.postshow = false
+										this.getList()
+									}else{
+										alert("发布失败")
+									}
+								})
+							}else{
+								alert("用户信息获取失败")
+							}
+						})
+					},
+					pageFun(data){
+						var that = this
+						$('#paginator').jqPaginator({
+							totalPages: data.totalPage,
+							visiblePages: 7,
+							currentPage: that.page.page,
+							prev: '<li class="d-none d-sm-block"><a href="javascript: pageFun()">&lt;</a></li>',
+							next: '<li class="d-none d-sm-block"><a href="javascript: pageFun()">&gt;</a></li>',
+							page: `<li class="d-none d-sm-block"><a href="javascript: pageFun()">{{page}}</a></li>`,
+							onPageChange: function(num, type) {
+								that.page.page = num
+							}
+						});
+					}
+				}
+			})
+			function pageFun(){
+				app.getList()
+			}
+		</script>
+	</body>
+</html>

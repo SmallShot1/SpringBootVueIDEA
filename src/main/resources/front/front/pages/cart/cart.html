@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>购物车</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="../../assetsimages/x-icon/agricul.png">
+		<link rel="stylesheet" href="../../assets/css/relys/animate.css">
+		<link rel="stylesheet" href="../../assets/css/relys/bootstrap.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/all.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/icofont.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/lightcase.css">
+		<link rel="stylesheet" href="../../assets/css/relys/swiper.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/style.css">
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<style type="text/css">
+			.cart-checkout-box button{
+					padding: 11px 30px;
+					border: 1px solid #f0f0f0;
+					-webkit-border-radius: 3px;
+					-moz-border-radius: 3px;
+					border-radius: 3px;
+					font-size: 16px;
+					border: none;
+					background: #ffb11f;
+					color: #fff;
+					outline: none;
+					border: none;
+					font-weight: 700;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!-- Page Header Section Start Here -->
+			<section class="page-header bg_img padding-tb">
+			    <div class="overlay"></div>
+			    <div class="container">
+			        <div class="page-header-content-area">
+			            <h4 class="ph-title">购物车</h4>
+			            <ul class="agri-ul">
+			                <li><a href="index.html">首页</a></li>
+			                <li><a class="active">购物车</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</section>
+			<!-- Page Header Section Ending Here -->
+			
+			
+			<!-- Shop Cart Page Section start here -->		            
+			<div class="shop-cart padding-tb">
+			    <div class="container">
+			        <div class="section-wrapper">
+			            <div class="cart-top">
+			                <table>
+			                    <thead>
+			                        <tr>
+			                            <th>商品</th>
+			                            <th>价格</th>
+			                            <th>数量</th>
+			                            <th>总价</th>
+			                            <th>操作</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                        <tr v-for="(item, i) in list">
+			                            <td class="product-item" style="display: flex;">
+											<!-- <input type="checkbox" name="cart" style="margin-right: 10px;" /> -->
+			                                <div class="p-thumb">
+			                                    <img :src="item.picture" alt="product">
+			                                </div>
+			                                <div class="p-content" style="width: auto;">
+			                                    {{item.goodname}}
+			                                </div>
+			                            </td>
+			                            <td>￥{{item.price}}</td>
+			                            <td>
+			                                <div class="cart-plus-minus">
+			                                    <div class="dec qtybutton" @click="onReduceTap(item)">-</div>
+			                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" v-model="item.buynumber">
+			                                    <div class="inc qtybutton" @click="onAddTap(item)">+</div>
+			                                </div>
+			                            </td>
+			                            <td>￥{{item.price*item.buynumber}}</td>
+			                            <td>
+			                                <img src="../../assets/images/del.png" alt="product" @click="onDeleteTap(item)">
+			                            </td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+			            </div>
+						<div class="cart_totals">
+							<table>
+								<tbody>
+									<tr class="order-total">
+										<th>总价</th>
+										<td>
+											<strong><span class="amount">{{totalPrice}} RMB</span></strong>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+			            <div class="cart-checkout-box" style="float: right;" v-if="list.length>0">
+			                <button @click="onOrderTap">立即结算</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<!-- Shop Cart Page Section ending here -->
+		</div>
+	</body>
+	<script src="../../assets/js/relys/jquery.js"></script>
+	<script src="../../assets/js/relys/fontawesome.min.js"></script>
+	<script src="../../assets/js/relys/waypoints.min.js"></script>
+	<script src="../../assets/js/relys/bootstrap.min.js"></script>
+	<script src="../../assets/js/relys/wow.min.js"></script>
+	<script src="../../assets/js/relys/swiper.min.js"></script>
+	<script src="../../assets/js/relys/jquery.countdown.min.js"></script>
+	<script src="../../assets/js/relys/jquery.counterup.min.js"></script>
+	<script src="../../assets/js/relys/isotope.pkgd.min.js"></script>
+	<script src="../../assets/js/relys/lightcase.js"></script>
+	<script src="../../assets/js/relys/functions.js"></script>
+	<script src="../../assets/js/relys/vue.js"></script>
+	<script src="../../assets/js/api/api.js"></script>
+	<script src="../../assets/js/api/shop-cart.js"></script>
+	<script src="../../assets/js/relys/utils.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+			el: "#app",
+			data: {
+				list: [],
+			},
+			computed: {
+				totalPrice(){
+					if(this.list.length>0){
+						var price = 0
+						this.list.forEach(item => {
+							price += item.price*item.buynumber
+						})
+						return price
+					}else{
+						return 0
+					}
+				}
+			},
+			created() {
+				this.pageList()
+			},
+			methods: {
+				pageList() {
+					var _this = this;
+					cartList(1, 100, function(res) {
+						_this.list = res.data.list
+					})
+				},
+				onReduceTap(data) {
+					var _this = this;
+					if (data.buynumber == 1) {
+						cartDelete([data.id], function(res) {
+							_this.pageList();
+							localStorage.removeItem(`cart${data.goodid}`)
+						})
+					} else {
+						data.buynumber -= 1;
+						cartUpdate(data, function(res) {
+							_this.pageList();
+						})
+					}
+				},
+				onAddTap(data) {
+					var _this = this;
+					data.buynumber += 1;
+					cartUpdate(data, function(res) {
+						_this.pageList();
+					});
+				},
+				onDeleteTap(data) {
+					var _this = this;
+					var r = confirm("是否删除");
+					if (r == true) {
+						cartDelete([data.id], function(res) {
+							_this.pageList();
+							localStorage.removeItem(`cart${data.goodid}`)
+						})
+					}
+				},
+				onOrderTap(data) {
+					let orderGoods = [];
+					// 1、处理购物车内已选择的订单生成商品
+					for (let i = 0; i < this.list.length; i++) {
+						orderGoods.push(this.list[i])
+					}
+					// 跳转到下单页面,需要购买的数据保存在缓存
+					localStorage.setItem('orderGoods', JSON.stringify(orderGoods))
+					// 跳转到支付页面
+					window.location.href = '../order/confirm-order.html';
+				}
+			}
+		})
+	</script>
+</html>

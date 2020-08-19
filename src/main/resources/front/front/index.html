@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>校园招聘系统</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
+		 rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="assets/images/x-icon/agricul.png">
+
+		<link rel="stylesheet" href="assets/css/relys/animate.css">
+		<link rel="stylesheet" href="assets/css/relys/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/css/relys/all.min.css">
+		<link rel="stylesheet" href="assets/css/relys/icofont.min.css">
+		<link rel="stylesheet" href="assets/css/relys/lightcase.css">
+		<link rel="stylesheet" href="assets/css/relys/swiper.min.css">
+		<link rel="stylesheet" href="assets/css/relys/style.css">
+		<style>
+			html, body {
+		        height: 100%;
+		        overflow: auto;
+		        margin: 0;
+		    }
+
+		    html {
+		        overflow: scroll;
+		    }
+			/* 客服 */
+			.kefu-area {
+			  height: 100%;
+			  display: flex;
+			  flex-direction: column;
+			  position: fixed;
+			  width: 100%;
+			  height: 100%;
+			  top: 0;
+			  left: 0;
+			  z-index: 10000;
+			  background-color: #fff;
+			}
+			.kefu-area .top-bar {
+			  background-color: #ffffff;
+			  border-bottom: solid 1px #d6d6d6;
+			  display: flex;
+			  justify-content: space-between;
+			  align-items: center;
+			  padding: 0px 40px;
+			}
+			.kefu-area .top-bar .user-info {
+			  display: grid;
+			  grid-template-columns: auto minmax(0, 1fr);
+			  grid-template-rows: 1fr 1fr;
+			  grid-template-areas: "user-image user-name" "user-image user-status";
+			  align-items: center;
+			}
+			.kefu-area .top-bar .user-info .user-head {
+			  grid-area: user-image;
+			  margin-right: 20px;
+			}
+			.kefu-area .top-bar .user-info .user-head:after {
+			  display: none;
+			}
+			.kefu-area .top-bar .user-info .name {
+			  grid-area: user-name;
+			  font-size: 23px;
+			  position: relative;
+			  top: 6px;
+			}
+			.kefu-area .top-bar .user-info .status {
+			  grid-area: user-status;
+			  font-size: 12px;
+			  display: flex;
+			  align-items: center;
+			  position: relative;
+			  top: -3px;
+			}
+			.kefu-area .top-bar .user-info .status:before {
+			  content: '';
+			  width: 10px;
+			  height: 10px;
+			  display: block;
+			  border-radius: 50%;
+			  background-color: #f95b55;
+			  margin-right: 5px;
+			}
+			.kefu-area .top-bar .user-info .status.online:before {
+			  background-color: #01e777;
+			}
+			.kefu-area .top-bar .user-info .status.away:before {
+			  background-color: #fda14c;
+			}
+			.kefu-area .top-bar .user-info .status.offline:before {
+			  background-color: #f95b55;
+			}
+			.kefu-area .top-bar .user-info .status:after {
+			  content: 'online';
+			}
+			.kefu-area .top-bar .buttons svg {
+			  height: 25px;
+			  fill: #c0c2c3;
+			}
+			.kefu-area .top-bar .buttons div {
+			  cursor: pointer;
+			}
+			.kefu-area .top-bar .buttons div:hover > svg {
+			  fill: #363e47;
+			}
+			.kefu-area .messages {
+			  height: calc(100% - 160px);
+			  display: flex;
+			  flex-direction: column;
+			  overflow-y: scroll;
+			}
+			.kefu-area .messages .date-split {
+			  text-align: center;
+			  color: #afafaf;
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			}
+			.kefu-area .messages .date-split:before, .kefu-area .messages .date-split:after {
+			  content: '';
+			  display: block;
+			  height: 1px;
+			  width: 100px;
+			  background-color: #c4c3c3;
+			}
+			.kefu-area .messages .date-split:before {
+			  margin-right: 20px;
+			}
+			.kefu-area .messages .date-split:after {
+			  margin-left: 20px;
+			}
+			.kefu-area .messages .message {
+			  display: flex;
+			  margin: 20px;
+			  position: relative;
+			}
+			.kefu-area .messages .message .user-head:after {
+			  display: none;
+			}
+			.kefu-area .messages .message:after {
+			  content: '';
+			  width: 0;
+			  height: 0;
+			  border-style: solid;
+			  border-width: 0 20px 15px 0;
+			  border-color: transparent #ffffff transparent transparent;
+			  position: absolute;
+			  left: 59px;
+			}
+			.kefu-area .messages .message .content {
+			  max-width: 70%;
+			  width: fit-content;
+			  height: fit-content;
+			  background-color: #fff;
+			  padding: 15px;
+			  border-radius: 0 10px 10px 10px;
+			  margin-left: 30px;
+			  color: #626c76;
+			}
+			.kefu-area .messages .message.fromme {
+			  flex-direction: row-reverse;
+			}
+			.kefu-area .messages .message.fromme:after {
+			  border-width: 15px 20px 0 0;
+			  border-color: #01e777 transparent transparent transparent;
+			  right: 59px;
+			  left: unset;
+			}
+			.kefu-area .messages .message.fromme .content {
+			  border-radius: 10px 0px 10px 10px;
+			  margin-left: unset;
+			  margin-right: 30px;
+			  background-color: #01e777;
+			  color: #fff;
+			}
+			.kefu-area .bottom-bar {
+			  background-color: #ffffff;
+			  height: 80px;
+			  width: 100%;
+			  display: flex;
+			  justify-content: space-between;
+			  align-items: center;
+			  position: fixed;
+			  bottom: 0;
+			  left: 0;
+			}
+			.kefu-area .bottom-bar .msg-input {
+			  width: calc(100% - 160px);
+			  margin: 30px;
+			  height: 40px;
+			  border-radius: 30px;
+			  border: 0px;
+			  background-color: #ececec;
+			  padding: 10px 15px 0px 15px;
+			  font-size: 18px;
+			}
+			.kefu-area .bottom-bar .msg-input::placeholder {
+			  color: #c5c5c5;
+			}
+			.kefu-area .bottom-bar .send-button {
+			  box-sizing: content-box;
+			  width: 30px;
+			  height: 30px;
+			  background-color: #0091e9;
+			  padding: 10px;
+			  border-radius: 50%;
+			  margin-right: 20px;
+			  cursor: pointer;
+			}
+			.kefu-area .bottom-bar .send-button:hover {
+			  background-color: #1cc1f3;
+			}
+			.kefu-area .bottom-bar .send-button:active {
+			  background-color: #0091e9;
+			}
+			.kefu-area .bottom-bar .send-button svg {
+			  fill: white;
+			  position: relative;
+			  left: 1px;
+			  top: 2px;
+			  width: 25px;
+			  height: 25px;
+			}
+			.kefu-area .user-head {
+			  width: 49px;
+			  height: 49px;
+			}
+			.kefu-area .user-head img {
+			  border-radius: 50%;
+			  width: 49px;
+			  height: 49px;
+			}
+			.kefu-area .user-head:after {
+			  content: '';
+			  display: block;
+			  position: relative;
+			  width: 11px;
+			  height: 11px;
+			  background-color: #f95b55;
+			  bottom: 19px;
+			  right: -33px;
+			  border-radius: 50%;
+			  border: solid 3px #363e47;
+			}
+			.kefu-area .user-head.online:after {
+			  background-color: #01e777;
+			}
+			.kefu-area .user-head.away:after {
+			  background-color: #fda14c;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- desktop menu start here -->
+		<header class="header-section" id="app">
+			<div class="header-bottom">
+				<div class="header-area">
+					<div class="container">
+						<div class="primary-menu">
+							<div class="main-area w-100">
+								<div class="main-menu d-flex flex-wrap align-items-center justify-content-center w-100">
+									<div class="logo px-4" style="font-weight: 600;font-size: 20px;display: flex;align-items: center;">校园招聘系统</div>
+									<ul class="agri-ul"></li>
+										<li :class="[item.url==url?'active':'', item.children.length>0?'menu-item-has-children':'']" v-for="(item, i) in navs" :key="i">
+											<a :href="`javascript: onPageTap('${item.url}')`" v-if="item.yanzheng&&hstoken">{{item.name}}</a>
+											<a :href="`javascript: onPageTap('${item.url}')`" v-if="!item.yanzheng&&!item.window">{{item.name}}</a>
+											<a :href="`${item.url}`"  target="#" v-if="!item.yanzheng&&item.window">{{item.name}}</a>
+											<ul class="agri-ul" v-if="item.children.length>0">
+												<li v-for="(ele, idx) in item.children" :key="idx"><a :href="`javascript: onPageTap('${ele.url}')`">{{ele.name}}</a></li>
+											</ul>
+										</li>
+										<li>
+											<a href="pages/login/login.html">登录</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- desktop menu ending here -->
+		<!-- iframe start here -->
+		<iframe src="pages/home/home.html" frameborder="0" scrolling="no" id="main" width="100%" onload="test(this)"></iframe>
+		<!-- iframe ending here -->
+		<!-- footer section start here -->
+		<footer class="footer-section padding-tb pb-0" style="padding: 40px 0">
+			<div class="container">
+				<div class="footer-top" style="display: flex;justify-content: center;width: 100%;">
+					<div class="row" style="width: 100%;display: flex;justify-content: center;">
+				<div class="footer-bottom">
+					<p>&copy; 2020<a href="index.html" target="_blank"><span>校园招聘系统</span></a>All Rights Reserved By<a href="#" target="_blank"><span>jiuling</span></a></p>
+				</div>
+			</div>
+		</footer>
+		<!-- footer section ending here -->
+
+		<script src="assets/js/relys/jquery.js"></script>
+		<script src="assets/js/relys/fontawesome.min.js"></script>
+		<script src="assets/js/relys/waypoints.min.js"></script>
+		<script src="assets/js/relys/bootstrap.min.js"></script>
+		<script src="assets/js/relys/wow.min.js"></script>
+		<script src="assets/js/relys/swiper.min.js"></script>
+		<script src="assets/js/relys/jquery.countdown.min.js"></script>
+		<script src="assets/js/relys/jquery.counterup.min.js"></script>
+		<script src="assets/js/relys/isotope.pkgd.min.js"></script>
+		<script src="assets/js/relys/lightcase.js"></script>
+		<script src="assets/js/relys/functions.js"></script>
+		<script src="assets/js/relys/vue.js"></script>
+		<script src="assets/js/api/api.js"></script>
+		<script src="assets/js/api/defaultuser.js"></script>
+		<script src="assets/js/api/tplist.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					hstoken: false,
+					url: '',
+					navs: [
+						{
+							name: '首页',
+							url: './pages/home/home.html',
+							children: []
+						},
+						{
+							name: '招聘信息模块'.split('模块')[0],
+							url: './pages/zhaopinxinxi/list.html',
+							children: [
+							]
+						},
+						{
+							name: '求职者信息模块'.split('模块')[0],
+							url: './pages/qiuzhizhexinxi/list.html',
+							children: [
+							]
+						},
+						{
+							name: '友情链接模块'.split('模块')[0],
+							url: './pages/youqinglianjie/list.html',
+							children: [
+							]
+						},
+						{
+							name: '留言板',
+							url: "pages/blog/blog-list.html",
+							children: []
+						},
+						{
+							name: '个人中心',
+							url: './pages/personal/personal.html',
+							yanzheng: true,
+							children: [
+								{
+									name: '我的收藏',
+									url: './pages/storeup/list.html'
+								},
+							]
+						}
+					]
+				},
+				created() {
+							var obj = [
+								{
+									menuname: "招聘信息列表".split('列表')[0],
+									menutable: "zhaopinxinxi",
+									buttons: [
+										"新增",
+										"查看",
+										"修改",
+										"删除",
+										"应聘",
+									]
+								},
+								{
+									menuname: "求职者信息列表".split('列表')[0],
+									menutable: "qiuzhizhexinxi",
+									buttons: [
+										"新增",
+										"查看",
+										"修改",
+										"删除",
+									]
+								},
+								{
+									menuname: "友情链接列表".split('列表')[0],
+									menutable: "youqinglianjie",
+									buttons: [
+										"新增",
+										"查看",
+										"修改",
+										"删除",
+									]
+								},
+							]
+					localStorage.setItem("daohangmenus", JSON.stringify(obj))
+					var obj2 = {
+						yonghu: [
+							{
+								menuname: "求职者信息列表".split('列表')[0],
+								menutable: "qiuzhizhexinxi",
+								buttons: [
+									"新增",
+									"查看",
+									"修改",
+									"删除",
+								]
+							},
+							{
+								menuname: "应聘信息列表".split('列表')[0],
+								menutable: "yingpinxinxi",
+								buttons: [
+									"查看",
+								]
+							},
+						],
+						qiyexinxi: [
+							{
+								menuname: "招聘信息列表".split('列表')[0],
+								menutable: "zhaopinxinxi",
+								buttons: [
+									"新增",
+									"查看",
+									"修改",
+									"删除",
+								]
+							},
+							{
+								menuname: "应聘信息列表".split('列表')[0],
+								menutable: "yingpinxinxi",
+								buttons: [
+									"查看",
+									"删除",
+									"审核",
+								]
+							},
+						],
+					}
+					localStorage.setItem("frontRoleMenus", JSON.stringify(obj2))
+					var url = baseurl + "admin/dist/index.html#/login"
+					if(preview=="否"&&neturl){
+						url = neturl + "admin/dist/index.html#/login"
+					}
+					this.navs.push({
+						name: '后台管理',
+						url,
+						window: true,
+						children: []
+					})
+				},
+				methods: {
+					onPageTap(url) {
+						$('#main').attr('src', url);
+					},
+				}
+			})
+			//获取子页面的高度
+			function reinitIframe() {
+				var childPageH = $('#main').contents().find('#app').height();
+				$('#main').height(childPageH);
+			}
+			window.setInterval("reinitIframe()", 200);
+
+			function onPageTap(url) {
+				$('#main').attr('src', url);
+			}
+			function test(that){
+				that.height = 0
+				app.url=$('#main').attr('src')
+				console.log(app.url)
+			}
+			setInterval(function() {
+				var token = localStorage.getItem('Token')
+				app.hstoken = token ? true : false
+			}, 1000)
+		</script>
+	</body>
+</html>

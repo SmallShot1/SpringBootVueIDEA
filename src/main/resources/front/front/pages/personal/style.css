@@ -1,0 +1,86 @@
+/*-----------------------------------
+18. contact-area
+-------------------------------------*/
+.contact-area {
+  background: #efefef none repeat scroll 0 0;
+}
+.contact-form {
+  background: #fff none repeat scroll 0 0;
+  padding: 20px 25px;
+}
+.message-title > p {
+  margin-bottom: 31px;
+}
+.input-filed{}
+.input-filed input {
+	border: 1px solid #e3e3e3;
+	border-radius: 0;
+	box-shadow: none;
+	font-size: 13px;
+	height: 45px;
+	margin-bottom: 20px;
+	padding-left: 15px;
+	width: 100%;
+}
+.contact-textarea{}
+.contact-textarea label{ }
+.contact-textarea textarea {
+	border: 1px solid #e3e3e3;
+	border-radius: 0;
+	font-size: 13px;
+	height: 124px;
+	padding: 10px 15px;
+	width: 100%;
+}
+.contact-textarea > input {
+	background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+	border: 1px solid #e3e3e3;
+	height: 40px;
+	margin-top: 15px;
+	padding: 3px 40px;
+	text-transform: uppercase;
+	transition: all 0.3s ease 0s;
+}
+.contact-textarea > input:hover{background:#FE4847;border-color:#FE4847;color:#fff}
+.contact-info {
+  background: #fff none repeat scroll 0 0;
+  padding: 20px 25px 38px;
+}
+.message-title {
+  margin-bottom: 25px;
+}
+.single-contact {
+}
+.single-contact p{margin-bottom:14px}
+.single-contact p:last-child{margin-bottom:0}
+.single-contact label {
+	color: #444;
+	display: block;
+	font-weight: normal;
+	font-weight: 600;
+}
+.contact-icon {
+  float: left;
+}
+.contact-icon i {
+  color: #fe4847;
+  font-size: 30px;
+}
+.contact-method {
+  margin-left: 45px;
+}
+.contact-method h2,.message-title h1 {
+  color: #242424;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.contact-method span {
+  text-transform: capitalize;
+}
+.map-area {
+	background: #fff none repeat scroll 0 0;
+	padding: 10px;
+	margin-bottom: 90px;
+}
+#googleMap{height:385px}

@@ -1,0 +1,219 @@
+// 主颜色
+$mainColor: #384C65;
+
+// 顶部横条 开始
+.el-header {
+  // box-shadow: 0 5px 10px #666;
+
+  // 顶部横条背景  
+  .el-menu {
+    background-color: $mainColor;
+    border-bottom: 5px solid #F8B67A !important;
+    position: relative;
+
+    // 头像 或者 退出登录的样式
+    .el-menu-item {
+      border-left: 1px solid #fff;
+      color: #fff;
+
+      &:hover {
+        background-color: $mainColor;
+        color: #fff;
+
+        i {
+          color: #fff;
+        }
+      }
+
+      i {
+        color: #fff;
+      }
+    }
+
+    // 顶部横条 标题
+    .title {
+      color: #fff;
+      font-weight: 500;
+    }
+    
+    // 顶部横条选项样式
+    li {
+      color: #fff;
+    }
+  }
+}
+// 顶部横条 结束
+
+// 侧边栏样式 开始
+.index-aside {
+  background: #fff;
+  position: relative;
+  // box-shadow: 5px 0 20px #666;
+  border-right: 1px solid #EEEEEE;
+
+  .el-menu {
+    border-right: solid 1px #fff;
+    color: #fff;
+
+    .el-menu-item {
+      background: #fff;
+      color: #9999A8;
+
+      &:hover {
+        // background-color: $mainColor;
+        color: #666;
+      }
+    }
+
+    .el-submenu {
+      background: #fff;
+      border: 1px solid #fff;
+      overflow: hidden;
+      border-radius: 10px;
+      font-weight: 700;
+
+      // 侧边栏鼠标悬浮效果
+      .el-submenu__title:hover {
+        // background-color: $mainColor;
+        color: #F8B67A;
+
+        i {
+          color: #F8B67A;
+        }
+      }
+
+      .el-submenu__title {
+        color: $mainColor;
+        
+        i {
+          color: $mainColor;
+        }
+      }
+    }
+  }
+}
+// 侧边栏样式 结束
+
+// 登录 开始
+.login-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    width: 100%;
+    height: calc(100% - 200px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top: 100px solid #384C65;
+    border-bottom: 100px solid #384C65;
+    z-index: 10;
+  }
+
+  &::after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: rgba(255,255,255,.4);
+    position: absolute;
+    top: 10%;
+    left: -50%;
+    z-index: 11;
+    transform: rotate(60deg);
+  }
+
+  .login-form {
+    background: rgba(255,255,255,.4);
+    color: #fff;
+    width: 350px;
+    height: 400px;
+    box-shadow: 0 0 5px #666;
+    top: 45%;
+    right: 20%;
+    transform: translateY(-50%);
+    border: 10px solid rgba(255,255,255,.4);
+    z-index: 20;
+
+    .el-form-item {
+      padding: 10px;
+    }
+
+    .el-form-item__label,
+    .el-radio {
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: $mainColor;
+    }
+
+    .el-button--primary{
+      background: $mainColor;
+      border: 1px solid $mainColor;
+    }
+    .el-button--primary:active {
+      background: $mainColor;
+      border-color: $mainColor;
+      color: #fff;
+      outline: none;
+    }
+    .el-button--primary:hover, .el-button--primary:focus {
+      background: $mainColor;
+      border-color: $mainColor;
+      color: #fff;
+    }
+    .el-radio__input.is-checked + .el-radio__label {
+     color: $mainColor;
+     font-weight: bold;
+     font-size: 18px;
+    }
+    .el-radio__input.is-checked .el-radio__inner {
+      border-color: $mainColor;
+      background: $mainColor;
+    }
+    .btn-login {
+      margin-top: 0;
+    }
+  }
+}
+// 登录 结束
+
+// 按钮 开始
+.el-button--primary{
+  background: #F8B67A;
+  border: 1px solid #F8B67A;
+}
+.el-button--primary:active {
+  background: #F8B67A;
+  border-color: #F8B67A;
+  color: #fff;
+  outline: none;
+}
+.el-button--primary:hover, .el-button--primary:focus {
+  background: #F8B67A;
+  border-color: #F8B67A;
+  color: #fff;
+}
+// 按钮 结束
+
+// 主体 开始
+.el-main {
+  background-color: #FFFFFF !important;
+
+  // 总体样式
+  .router-view {
+    padding: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    background-color: #DADADA;
+  }
+}
+// 主体 结束

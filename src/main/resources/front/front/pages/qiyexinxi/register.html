@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<link rel="stylesheet" href="../../assets/css/relys/login.css">
+	</head>
+	<body>
+		<div class="container" id="app">
+			<div class="loginBox">
+				<h3>注册</h3>
+				<form id="loginForm">
+					<div class="input-wrapper">
+						<label>账号:</label>
+						<input v-model="username" type="text" name="" placeholder="请输入账号">
+					</div>
+					<div class="input-wrapper">
+						<label>密码:</label>
+						<input v-model="mima" type="password" name="" placeholder="密码">
+					</div>
+					<div class="input-wrapper">
+						<label>企业名称:</label>
+						<input v-model="qiyemingcheng" type="text" name="" placeholder="请输入企业名称">
+					</div>
+					<div class="input-wrapper">
+						<label>负责人:</label>
+						<input v-model="fuzeren" type="text" name="" placeholder="请输入负责人">
+					</div>
+					<div class="input-wrapper">
+						<label>联系电话:</label>
+						<input v-model="lianxidianhua" type="text" name="" placeholder="请输入联系电话">
+					</div>
+					<div class="input-wrapper">
+						<label>企业邮箱:</label>
+						<input v-model="qiyeyouxiang" type="text" name="" placeholder="请输入企业邮箱">
+					</div>
+				</form>
+				<a href="../login/login.html">已有账号？去登录</a>
+				<button type="button" @click="userRegister">注册</button>
+			</div>
+		</div>
+		<script src="../../assets/js/relys/jquery.js"></script>
+		<script src="../../assets/js/relys/vue.js"></script>
+		<script src="../../assets/js/api/api.js"></script>
+		<script src="../../assets/js/api/defaultuser.js"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					username: '',
+					mima: '',
+					"qiyemingcheng": "",
+					"fuzeren": "",
+					"lianxidianhua": "",
+					"qiyeyouxiang": "",
+				},
+				methods: {
+					userRegister(){
+						var data = {
+							"qiyebianhao": this.username,
+							"mima": this.mima,
+							"qiyemingcheng": this.qiyemingcheng,
+							"fuzeren": this.fuzeren,
+							"lianxidianhua": this.lianxidianhua,
+							"qiyeyouxiang": this.qiyeyouxiang,
+						}
+						register('qiyexinxi', data, function(res){
+							if(res.code==0){
+								alert('注册成功')
+								window.parent.location.href = '../login/login.html'
+							}
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

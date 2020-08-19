@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>购物车</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="../../assetsimages/x-icon/agricul.png">
+		<link rel="stylesheet" href="../../assets/css/relys/animate.css">
+		<link rel="stylesheet" href="../../assets/css/relys/bootstrap.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/all.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/icofont.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/lightcase.css">
+		<link rel="stylesheet" href="../../assets/css/relys/swiper.min.css">
+		<link rel="stylesheet" href="../../assets/css/relys/style.css">
+		<style type="text/css">
+			.cart-checkout-box button{
+					padding: 11px 30px;
+					border: 1px solid #f0f0f0;
+					-webkit-border-radius: 3px;
+					-moz-border-radius: 3px;
+					border-radius: 3px;
+					font-size: 16px;
+					border: none;
+					background: #ffb11f;
+					color: #fff;
+					outline: none;
+					border: none;
+					font-weight: 700;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!-- Page Header Section Start Here -->
+			<section class="page-header bg_img padding-tb">
+			    <div class="overlay"></div>
+			    <div class="container">
+			        <div class="page-header-content-area">
+			            <h4 class="ph-title">我的地址</h4>
+			            <ul class="agri-ul">
+			                <li><a href="index.html">首页</a></li>
+			                <li><a class="active">我的地址</a></li>
+			            </ul>
+			        </div>
+			    </div>
+			</section>
+			<!-- Page Header Section Ending Here -->
+			
+			
+			<!-- Shop Cart Page Section start here -->		            
+			<div class="shop-cart padding-tb">
+			    <div class="container">
+			        <div class="section-wrapper">
+			            <div class="cart-top">
+			                <table>
+			                    <thead>
+			                        <tr>
+			                            <th>联系人</th>
+			                            <th>手机号码</th>
+			                            <th>地址</th>
+			                            <th>默认地址</th>
+			                            <th>操作</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                        <tr v-for="(item, i) in list">
+										<td>{{item.name}}</td>
+										<td>{{item.phone}}</td>
+			                            <td class="product-item" style="display: flex;">
+			                                <div class="p-content" style="width: auto;">
+			                                    {{item.address}}
+			                                </div>
+			                            </td>
+										<td style="color: red;">{{item.isdefault=="是"?'默认地址':'/'}}</td>
+			                            <td>
+			                                <span @click="onUpdateTap(item)">编辑</span>
+			                            </td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+			            </div>
+						<h5 style="width: 100%;text-align: center;" @click="window.location.href='./address-edit.html'" v-if="list.length==0">新增地址</h5>
+			            <div class="paginations">
+			            	<ul class="agri-ul d-flex flex-wrap justify-content-center" id="paginator">
+			            	</ul>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<!-- Shop Cart Page Section ending here -->
+		</div>
+	</body>
+	<script src="../../assets/js/relys/jquery.js"></script>
+	<script src="../../assets/js/relys/fontawesome.min.js"></script>
+	<script src="../../assets/js/relys/waypoints.min.js"></script>
+	<script src="../../assets/js/relys/bootstrap.min.js"></script>
+	<script src="../../assets/js/relys/wow.min.js"></script>
+	<script src="../../assets/js/relys/swiper.min.js"></script>
+	<script src="../../assets/js/relys/jquery.countdown.min.js"></script>
+	<script src="../../assets/js/relys/jquery.counterup.min.js"></script>
+	<script src="../../assets/js/relys/isotope.pkgd.min.js"></script>
+	<script src="../../assets/js/relys/lightcase.js"></script>
+	<script src="../../assets/js/relys/functions.js"></script>
+	<script src="../../assets/js/relys/vue.js"></script>
+	<script src="../../assets/js/api/api.js"></script>
+	<!-- 相关接口 -->
+	<script src="../../assets/js/api/shop-address.js"></script>
+	<script src="../../assets/js/relys/jq-paginator.min.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+			el: '#app',
+			data: {
+				list: [],
+				showFlag: false,
+				page: 1,
+				limit: 16,
+				total: 0
+			},
+			async created() {
+				var data = await this.pageList()
+				this.pageFun(data)
+			},
+			methods: {
+				pageList() {
+					var _this = this;
+						
+					return new Promise((resolve) => {
+						addressList(this.page, this.limit, function(res) {
+							_this.list = res.data.list
+							_this.total = res.data.total
+							resolve(res.data)
+						})
+					})
+					
+				},
+				pageFun(data){
+					var that = this
+					$('#paginator').jqPaginator({
+						totalPages: data.totalPage,
+						visiblePages: 7,
+						currentPage: that.page,
+						prev: '<li class="d-none d-sm-block"><a href="javascript: pageFun()">&lt;</a></li>',
+						next: '<li class="d-none d-sm-block"><a href="javascript: pageFun()">&gt;</a></li>',
+						page: `<li class="d-none d-sm-block"><a href="javascript: pageFun()">{{page}}</a></li>`,
+						onPageChange: function(num, type) {
+							that.page.page = num
+						}
+					});
+				},
+				onDeleteTap(data) {
+					var _this = this;
+					var r = confirm("是否删除");
+					if (r == true) {
+						addressDelete([data.id], function(res) {
+							alert('地址删除成功')
+							_this.pageList();
+						})
+					}
+				},
+				onAddTap() {
+					window.location.href = './address-edit.html'
+				},
+				onUpdateTap(item) {
+					window.location.href = './address-edit.html?id=' + item.id
+				}
+			}
+		})
+		function pageFun(){
+			app.pageList()
+		}
+	</script>
+</html>
